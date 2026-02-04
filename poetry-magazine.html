@@ -4,8 +4,7 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>掬月诗集 - 电子诗刊</title>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@200;300;400;500;600;700;900&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <!-- 不依赖外部CDN，使用系统字体 -->
     <style>
         :root {
             --primary: #8B4513;
@@ -27,7 +26,7 @@
         }
 
         body {
-            font-family: 'Noto Serif SC', 'ZCOOL XiaoWei', serif;
+            font-family: "Songti SC", "STSong", "SimSun", "华文宋体", "宋体", serif;
             background: linear-gradient(135deg, var(--bg-warm) 0%, #c4b494 50%, var(--bg-warm) 100%);
             min-height: 100vh;
             display: flex;
@@ -171,14 +170,19 @@
             transform-style: preserve-3d;
             transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s;
             pointer-events: none;
+            opacity: 0;
+            visibility: hidden;
         }
 
         .page-spread.active {
             pointer-events: auto;
+            opacity: 1;
+            visibility: visible;
         }
 
         .page-spread.flipped {
-            z-index: 10;
+            opacity: 0;
+            visibility: hidden;
         }
 
         /* ===== 左右页面 ===== */
@@ -581,7 +585,7 @@
             gap: 0.5rem;
         }
 
-        .annotation-card-title .material-symbols-outlined {
+        .annotation-card-title .icon {
             color: var(--seal-red);
             font-size: 1.25rem;
         }
@@ -982,7 +986,7 @@
             color: var(--ink);
         }
 
-        .annotation-modal-title .material-symbols-outlined {
+        .annotation-modal-title .icon {
             color: var(--seal-red);
         }
 
@@ -1213,13 +1217,13 @@
     <header class="header">
         <div class="logo" onclick="goToPage(0)">
             <div class="logo-icon">
-                <span class="material-symbols-outlined">auto_stories</span>
+                <span class="icon">📖</span>
             </div>
             <span class="logo-text">掬月诗集</span>
         </div>
         <div class="nav-controls">
             <button class="nav-btn" onclick="toggleToc()">
-                <span class="material-symbols-outlined">menu</span>
+                <span class="icon">☰</span>
                 <span>目录</span>
             </button>
         </div>
@@ -1240,7 +1244,7 @@
     <!-- 翻页导航 -->
     <nav class="page-navigation">
         <button class="page-nav-btn" id="prevBtn" onclick="prevPage()">
-            <span class="material-symbols-outlined">chevron_left</span>
+            <span class="icon">◀</span>
         </button>
         <div class="page-indicator">
             <span class="page-indicator-title" id="pageTitle">掬月诗集</span>
@@ -1249,7 +1253,7 @@
             </div>
         </div>
         <button class="page-nav-btn" id="nextBtn" onclick="nextPage()">
-            <span class="material-symbols-outlined">chevron_right</span>
+            <span class="icon">▶</span>
         </button>
     </nav>
 
@@ -1258,11 +1262,11 @@
     <div class="annotation-modal" id="annotationModal">
         <div class="annotation-modal-header">
             <h2 class="annotation-modal-title">
-                <span class="material-symbols-outlined">menu_book</span>
+                <span class="icon">📚</span>
                 <span id="modalPoemTitle">诗词详解</span>
             </h2>
             <button class="annotation-modal-close" onclick="closeAnnotationModal()">
-                <span class="material-symbols-outlined">close</span>
+                <span class="icon">✕</span>
             </button>
         </div>
         <div class="annotation-modal-body" id="annotationModalBody">
@@ -1275,11 +1279,11 @@
     <aside class="toc-drawer" id="tocDrawer">
         <div class="toc-drawer-header">
             <h2 class="toc-drawer-title">
-                <span class="material-symbols-outlined">list</span>
+                <span class="icon">☰</span>
                 目录
             </h2>
             <button class="toc-drawer-close" onclick="toggleToc()">
-                <span class="material-symbols-outlined">close</span>
+                <span class="icon">✕</span>
             </button>
         </div>
         <div class="toc-drawer-list" id="tocList">
@@ -1318,118 +1322,353 @@
                     "琐窗：雕刻或绘有连环形花纹装饰构件的窗户。",
                     "明妃：指王昭君，晋代避司马昭（文帝）讳，改称明君，后人称之为明妃。",
                     "银屏绛阙：华美的屏风和朱红的宫门。银屏，古代家居陈设中镶嵌银质装饰的屏风。绛阙，指宫殿寺观前的朱色门阙。",
-                    "凉飙：秋风，最早见于汉代班婕妤《怨歌行》「常恐秋节至，凉飙夺炎热」",
+                    "凉飙：秋风，最早见于汉代班婕妤《怨歌行》「常恐秋节至，凉飙夺炎热」。",
                     "瀚海：原指北方大型湖泊，后演变为戈壁沙漠的代称。这里指沙漠。",
-                    "霜风凄紧欺弦噎：寒风凄厉，迫使琵琶弦声阻塞如同呜咽。化用柳永《八声甘州》「渐霜风凄紧，关河冷落，残照当楼」。",
-                    "随渐响环佩，待归魂魄：化用杜甫《咏怀古迹·其三》「画图省识春风面，环佩空归夜月魂」。指远在故国的人们听到环佩声逐渐响起——昭君的魂魄正从塞外归来。",
+                    "霜风凄紧欺弦噎：寒风凄厉，迫使琵琶弦声阻塞如同呜咽。化用柳永《八声甘州》「渐霜风凄紧，关河冷落，残照当楼」。霜风，指代秋冬时节凛冽刺骨的寒风。噎，声塞。",
+                    "随渐响环佩，待归魂魄：化用杜甫《咏怀古迹·其三》「画图省识春风面，环佩空归夜月魂」。这里指：远在故国的人们听到了环佩声逐渐响起——这是昭君的魂魄正从塞外归来。",
                     "顿：忽然。",
                     "城堞：指城墙上沿的齿状矮墙结构。",
                     "驿马：古代官方设置的驿站专用的马匹。",
-                    "金柝：别名刁斗，古代军中使用的金属器具，兼具炊煮与报时功能。三足一柄，白天炊煮，夜间敲击巡更报时。",
+                    "金柝：别名刁斗，是古代军中使用的金属器具，兼具炊煮与报时功能。其形制为三足一柄，白天用作炊具烧煮食物，夜间敲击作为巡更报时工具。",
                     "耿耿：原指心中挂怀、烦躁不安之态，这里指边塞之声杂乱而悲戚。",
                     "迢递：本义形容遥远之貌，这里形容塞外夜色无边无际。",
-                    "漏壶滴缺：漏壶中的水滴仿佛要将壶底滴穿，形容夜的漫长。漏壶是古代计时器具。",
-                    "冥迷青冢：冥迷，模糊不清、迷蒙迷茫。青冢，昭君墓，相传北地草皆白，惟独昭君墓上草青，故名青冢。"
-                ],
-                bgImage: "https://images.unsplash.com/photo-1509316785289-025f5b846b35?w=800"
+                    "漏壶滴缺：漏壶中的水滴仿佛要将壶底滴穿，形容夜的漫长。漏壶，古代计时的器具，用铜制成，分播水壶、受水壶两部。",
+                    "冥迷青冢：冥迷，模糊不清、迷蒙迷茫，常用于描绘自然景物朦胧状态或人物神志恍惚之态。青冢，昭君墓。相传北地草皆白，惟独昭君墓上草青，故名青冢。"
+                ]
             },
             {
                 id: 2,
-                title: "春日偶感",
-                author: "小红",
-                content: ["春风拂面来", "桃花次第开", "少年心事重", "独倚栏杆呆"],
-                interpretation: "诗人在春日里有感而发，借春风、桃花等意象，抒发青春年少时的心事与迷茫。末句「独倚栏杆呆」生动描绘了少年沉思的姿态。",
-                notes: [
-                    "春风拂面：春天的微风轻轻吹过脸庞",
-                    "次第开：依次开放",
-                    "心事重：心中有很多烦恼或思虑",
-                    "独倚栏杆：独自靠在栏杆上"
+                title: "瑞龙吟·大石长安",
+                author: "阵午车",
+                createTime: "2024年6月",
+                content: [
+                    "廉纤雨。时洒睡鹭陂塘，浴凫兰浦。葱葱苔湿墙头，寸青不管，侵人旧户。",
+                    "困眠误。还梦汉宫金屋，夕阳如缕。长安望绣成堆，画楼接月，铜仙奉露。",
+                    "长记真妃妆罢，羽霓金雀，相歌同舞。千里紫骝青骢，倾国游处。春宫粉黛，羞见频相妒。人无数、梨园乐满，天街难步。过事空迟暮。玉颜已付，渔阳乱鼓。风飐轻帘举。惊觉晚、西窗垂杨低语。半床旧梦，一怀新絮。"
                 ],
-                bgImage: "https://images.unsplash.com/photo-1462275646964-a0e3386b89fa?w=800"
+                interpretation: "读长恨歌有感，遂作《瑞龙吟》以梦记之。以周邦彦《瑞龙吟·大石春景》调为正体，韵脚为词林正韵四部。致力于构建时空交叠的章法。上片以微雨苔痕起笔点明环境，中片通过梦境勾连起现实和历史，以长安盛景铺陈开元天宝的璀璨幻梦，下片聚焦杨贵妃的倾城风华、渔阳鼙鼓的破碎幻灭以及梦醒时分的怅然若失。",
+                notes: [
+                    "廉纤：微小，形容微雨。",
+                    "兰浦：长着兰草的水边。",
+                    "葱葱：茂盛的样子。",
+                    "误：这里指误入梦境。",
+                    "汉宫金屋：本义指华美之屋。汉代班固《汉武故事》中汉武帝刘彻「金屋藏娇」记载，幼年承诺若娶表妹陈阿娇为妻，将建造金屋供其居住。",
+                    "长安望绣成堆：化用杜牧《过华清宫绝句》「长安回望绣成堆，山顶千门次第开」一句。",
+                    "画楼接月：华丽的楼房托住了月亮。画楼，雕饰华丽的楼房。接，托举。",
+                    "铜仙奉露：金铜仙人掌中的承露盘供奉着仙露。铜仙，即金铜仙人，指汉武帝时期铸造的仙人像。",
+                    "真妃：即杨贵妃。因杨贵妃曾为女道士，号太真，故称。",
+                    "羽霓金雀：霓裳羽衣、金雀钗头，这里用来形容杨贵妃装饰华美。",
+                    "千里紫骝青骢：形容杨贵妃出游时，随从的骏马奔驰的阵势。",
+                    "梨园：原是古代对戏曲班子的别称，唐玄宗李隆基在此教演艺人。",
+                    "天街：一般指朱雀大街，是隋唐长安城南北中轴线。",
+                    "渔阳：郡名，安禄山起兵叛乱之地。天宝十四载（755）冬，安禄山在范阳起兵叛乱。",
+                    "飐：因风而颤动或展开。"
+                ]
             },
             {
                 id: 3,
-                title: "夜读有感",
-                author: "阿华",
-                content: ["灯火阑珊处", "书香伴夜长", "古人今人事", "尽在字里藏"],
-                interpretation: "这首诗描写了深夜读书的情景。灯火微弱，书香萦绕，诗人在阅读中感受到古今之事皆蕴藏于字里行间，表达了对读书的热爱和感悟。",
-                notes: [
-                    "灯火阑珊：灯光将尽，指深夜时分",
-                    "书香：书籍的墨香，也指读书的氛围",
-                    "古人今人事：古代和现代的人和事",
-                    "字里藏：隐藏在文字之中"
+                title: "疏影",
+                author: "阵午车",
+                createTime: "2025年1月",
+                content: [
+                    "暗香未竭。自冻枝一角，淡英奇绝。缟染初妆，粉缀梢头，寒添素骨孤洁。寿阳教把香瘢补，更变做、佩环凄切。恨青春、未与伊期，已伴冰霜俱灭。",
+                    "零落黄昏陌上，剩苔侵岸石，桥积残雪。漠漠娟枝，客里西施，谁共半湖明月？驿边攀折曾相与，向陇上、玉龙吹彻。念而今，梢底芳衰，又有几回分别？"
                 ],
-                bgImage: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800"
+                interpretation: "咏物词，吟咏梅花之作。以姜夔《疏影·苔枝缀玉》为正体。以寒梅为意象，通过细腻的笔触勾勒出梅花在冰雪中孤傲绽放又渐次凋零的凄美历程。",
+                notes: [
+                    "暗香：指清幽淡雅的香气，尤指梅花散发的芬芳。",
+                    "淡英奇绝：素白的花朵清奇绝伦。奇绝，奇妙到极点，这里指梅花姿态清奇。",
+                    "缟：一种白色的丝织品。",
+                    "寿阳教把香瘢补：化用寿阳公主梅花妆的典故。",
+                    "佩环凄切：化用杜甫《咏怀古迹·其三》「画图省识春风面，环佩空归夜月魂」。",
+                    "青春：原意指草木青翠的春天。这里用作双关义，既指春天，又指美好年华。",
+                    "伊：你。",
+                    "零落黄昏陌上：化用陆游《卜算子·咏梅》「零落成泥碾作尘，只有香如故」。",
+                    "漠漠：原指灰蒙蒙的视觉状态，也形容寂静无声的环境。",
+                    "客里西施：这里把寂寥的梅花比作客居他乡的西施。",
+                    "驿边攀折曾相与：化用南北朝陆凯《赠范晔诗》「折花逢驿使，赠与陇头人」。",
+                    "玉龙吹彻：用玉笛吹奏着《梅花落》的笛曲。玉龙，玉笛。"
+                ]
             },
             {
                 id: 4,
-                title: "送别",
-                author: "小李",
-                content: ["长亭古道边", "芳草连天远", "此去经年后", "何时再相见"],
-                interpretation: "这是一首送别诗，借用经典的送别意象——长亭、古道、芳草，表达离别时的不舍与对重逢的期盼。语言简洁而情感真挚。",
-                notes: [
-                    "长亭：古时设在路旁供行人休息的亭子，常作送别之处",
-                    "古道：古老的道路",
-                    "芳草连天：芳草延伸到天边",
-                    "经年：过了一年，指时间长久"
+                title: "望海潮·嫦娥",
+                author: "阵午车",
+                createTime: "某年中秋",
+                content: [
+                    "翦波眸子，凝云纤手，绛唇一片冰消。簪股绣鸳，钗梁亸燕，眉山隐约相描。犹捻四弦娇。玉兔身边舞，仙袂纷撩。曲绕蟾宫，琵琶声远下银桥。",
+                    "桥边谁教吹箫？有金风露吐，玉桂香抛。琉瓦溅华，明灯碍月，画楼十里帘招。天远路迢迢！弱步银河渡，夜冷宫遥。欲返人间未了，长梦枕边销。"
                 ],
-                bgImage: "https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=800"
+                interpretation: "以柳永《望海潮·东南形胜》为正体，借嫦娥神话，以极盛之景托极寂之心。",
+                notes: [
+                    "翦波眸子：化用李贺《唐儿歌》「骨重神寒天庙器，一双瞳人剪秋水」，形容眼睛晶莹闪光。翦，通「剪」。",
+                    "绛唇：红唇。",
+                    "簪股绣鸳：发簪绣着鸳鸯。簪是用来绾定发髻或冠的长针，簪股是簪的代称。",
+                    "钗梁亸燕：钗头垂下双燕。钗梁：钗的主干部分。亸：下垂。",
+                    "眉山：指女子秀丽的眉形，源自《西京杂记》对卓文君的记载。",
+                    "四弦：指琵琶。",
+                    "玉兔：又名月兔，居住在月球上，在月宫里负责捣药。",
+                    "仙袂：指仙人的衣袖。该词最早可追溯至《长恨歌》中「风吹仙袂飘飘举」的经典描写。",
+                    "蟾宫：即广寒宫，中国传统神话中位于月球的宫殿，为嫦娥奔月后所居之处。",
+                    "银桥：传说中仙杖变化而成的大桥。桥可通月宫。",
+                    "桥边谁教吹箫：化用杜牧《寄扬州韩绰判官》「二十四桥明月夜，玉人何处教吹箫」。",
+                    "金风：秋风。",
+                    "玉桂：桂树的美称。",
+                    "琉瓦：琉璃瓦。",
+                    "画楼：雕饰华丽的楼房。",
+                    "弱步：步态轻盈的样子。"
+                ]
             },
             {
                 id: 5,
-                title: "校园晨曲",
-                author: "小王",
-                content: ["晨光照书楼", "琅琅读书声", "少年志气高", "前路任驰骋"],
-                interpretation: "诗人描绘了校园清晨的美好景象。阳光照耀着教学楼，朗朗的读书声回荡其中，展现了莘莘学子的蓬勃朝气和远大志向。",
-                notes: [
-                    "晨光：早晨的阳光",
-                    "琅琅：形容读书声清朗响亮",
-                    "志气高：志向远大，意气风发",
-                    "任驰骋：自由奔驰，比喻施展抱负"
-                ],
-                bgImage: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800"
+                title: "石室禅寺观梨花有感",
+                author: "六步斋",
+                createTime: "2025年春",
+                content: [
+                    "棠梨偏于伽蓝开，",
+                    "汇成石莲一道白。",
+                    "若非禅音催灵智，",
+                    "怎得青雪伴雨来。"
+                ]
             },
             {
                 id: 6,
-                title: "冬夜",
-                author: "小张",
-                content: ["窗外雪纷飞", "炉边茶正煮", "闲翻旧日记", "往事如烟去"],
-                interpretation: "这首诗描绘了一个温馨的冬夜场景。窗外大雪纷飞，室内炉火温暖，诗人在煮茶品茗之际翻阅旧日记，往事如烟般浮现又消散，充满了怀旧的情愫。",
-                notes: [
-                    "雪纷飞：雪花纷纷扬扬地飘落",
-                    "炉边：火炉旁边",
-                    "闲翻：悠闲地翻阅",
-                    "往事如烟：过去的事情像烟雾一样飘散"
-                ],
-                bgImage: "https://images.unsplash.com/photo-1491002052546-bf38f186af56?w=800"
+                title: "醉花阴·临安咏夏",
+                author: "六步斋",
+                createTime: "2025年夏",
+                content: [
+                    "碧水新荷钱叶小，柳浪闻雀闹。",
+                    "车水马龙里，夕照雷峰，蝉咽林间道。",
+                    "钱塘往事随风飘，兴废何人料？",
+                    "燕语莺声里，西泠桥畔，寂寞苏小小。"
+                ]
             },
             {
                 id: 7,
-                title: "致友人",
-                author: "小陈",
-                content: ["相识在少年", "共度好时光", "纵然各天涯", "友情永不忘"],
-                interpretation: "这是一首赠友诗，回忆了与友人相识于少年时代，共同度过的美好时光。即使日后天各一方，友情也永远铭记于心。语言朴实，情感真挚。",
-                notes: [
-                    "相识：互相认识",
-                    "少年：年少的时候",
-                    "好时光：美好的时光",
-                    "各天涯：分别在天涯海角，形容相距遥远"
-                ],
-                bgImage: "https://images.unsplash.com/photo-1444464666168-49d633b86797?w=800"
+                title: "醉花阴·新岁",
+                author: "六步斋",
+                createTime: "2025年春节",
+                content: [
+                    "且唱新词送岁华，椒颂尚吟罢。",
+                    "调雪底黄芽，闲赏物华，观火树银花。",
+                    "玲珑百果银盘卧，风味自堪夸。",
+                    "品赤枣雪耳，尝味人间，甘美自万家。"
+                ]
             },
             {
                 id: 8,
-                title: "登高望远",
-                author: "小刘",
-                content: ["独上高楼望", "云山层层叠", "心随白云飞", "志在千里外"],
-                interpretation: "诗人独自登上高楼远眺，看到群山层叠、白云飘飞的壮阔景象，心随白云飞向远方，表达了对未来的憧憬和远大的志向。",
-                notes: [
-                    "独上：独自登上",
-                    "云山层层叠：云雾缭绕的山峦层层叠叠",
-                    "心随白云飞：心绪随着白云飘向远方",
-                    "志在千里外：志向在千里之外，形容抱负远大"
+                title: "天净沙·秋思",
+                author: "姝",
+                content: [
+                    "梧桐凉夜笙笳，残苑落枣鸣花，长桌乱页清茶。",
+                    "影斜灯下，婵娟何谓天涯。"
+                ]
+            },
+            {
+                id: 9,
+                title: "越中诸贤咏·其一 越王勾践",
+                author: "金潼",
+                createTime: "2025年10月15日",
+                content: [
+                    "身若昆吾百炼金，三千死士下嵚崟。",
+                    "每于兴国思尝胆，终见复雠由捧心。",
+                    "越鸟弓藏射潮晚，吴宫花落浣溪深。",
+                    "衹今犹惧君恩重，过尽投醪未敢斟。"
+                ]
+            },
+            {
+                id: 10,
+                title: "越中诸贤咏·其二 陆游",
+                author: "金潼",
+                createTime: "2025年10月15日",
+                content: [
+                    "胡尘泪尽望君王，漫学少陵怀谏章。",
+                    "异代剑南曾邂逅，此生渭北各思量。",
+                    "分钗怕问黄縢冷，聚墨空留黛玉香。",
+                    "亘古男儿真绝调，只应梦比饮冰凉。"
+                ]
+            },
+            {
+                id: 11,
+                title: "定风波·把酒花前（其一）",
+                author: "贾一平",
+                createTime: "2025年9月14日",
+                content: [
+                    "把酒西窗树树垂。举杯自放最堪悲。南国不知秋已到。过了。岂容落叶似花飞。",
+                    "一盏曾将春送断。添满。更凭一盏耐春迟。醉入梦乡还可醉。如此。盛秋略比暮春时。"
+                ]
+            },
+            {
+                id: 12,
+                title: "定风波·把酒花前（其二）",
+                author: "贾一平",
+                createTime: "2025年9月14日",
+                content: [
+                    "把酒成眠总未甘。不眠还忆百花潭。留得枯荷听雨处。曾驻。蜻蜓立上小攒尖。",
+                    "往事追寻如点水。何已。波纹镜影本难兼。索性大风萍末起。吹碎。万般都化水挼蓝。"
+                ]
+            },
+            {
+                id: 13,
+                title: "定风波·把酒花前（其三）",
+                author: "贾一平",
+                createTime: "2025年9月14日",
+                content: [
+                    "把酒支颐欲问公。那堪暂挽水流东。追问可怜终自问。何瞬。几多铸就寸心中。",
+                    "瓶小一枝闲料理。伤矣。折前冶艳属芳丛。越是飘零须烂赏。休忘。一枝便不让皆空。"
+                ]
+            },
+            {
+                id: 14,
+                title: "定风波·把酒花前（其四）",
+                author: "贾一平",
+                createTime: "2025年9月14日",
+                content: [
+                    "把酒高楼且放吟。轻云多少算层阴。无尽银流流也尽。谁认。青天碧海奔娥心。",
+                    "淡白渐侵栏外紫。交汇。汇如静水不知深。一派微星淹没了。犹照。寥寥光历去来今。"
+                ]
+            },
+            {
+                id: 15,
+                title: "冬日即事",
+                author: "摘星子",
+                createTime: "12月14日",
+                content: [
+                    "寒风知我意，须自北方来。",
+                    "岭南春未尽，鲁国地已白。",
+                    "纸画承旧训，回忆滋新苔。",
+                    "谁道故人少，千里亦同怀。"
+                ]
+            },
+            {
+                id: 16,
+                title: "归乡",
+                author: "摘星子",
+                createTime: "11月19日",
+                content: [
+                    "辞家千里又千里，目极青山重青山。",
+                    "鹏城不见聊城月，晴空亦当照我还。"
+                ]
+            },
+            {
+                id: 17,
+                title: "秋夜獨懷",
+                author: "Yuqing Du",
+                content: [
+                    "長夜深深月半微，渺難尋故兩依依。",
+                    "殘燈未竟人無語，獨影輕搖葉自飛。",
+                    "往事已隨秋水遠，芳心猶傍舊園扉。",
+                    "露冷香魂終未了，霜落清光盡滿衣。"
+                ]
+            },
+            {
+                id: 18,
+                title: "破陣子·題明故宮遺址",
+                author: "昆仑水龙",
+                content: [
+                    "百十年來家國，千萬里地山河。",
+                    "昔日十朝古都處，文教禮儀皆昌盛，曾立龍鳳閣。",
+                    "一旦紅塵升起，古都亦遭矛戈。",
+                    "最是戡亂未靖日，倉皇難奏離別歌，海峽兩相隔。"
+                ]
+            },
+            {
+                id: 19,
+                title: "七律·抵金陵故都",
+                author: "昆仑水龙",
+                content: [
+                    "錦山煙雨兩茫茫，故都幾時復重光？",
+                    "攻守易勢今勝昔，鼎沸如焚淚兩行。",
+                    "江宁城勢何日興，秣陵亦應再稱王。",
+                    "古今往事付談笑，興衰勝負皆滄桑。"
+                ]
+            },
+            {
+                id: 20,
+                title: "定风波·别黄俊波教授",
+                author: "缃彩成丛",
+                createTime: "2024年12月",
+                content: [
+                    "万里黄云岁月驰，北风一度叹逢迟。日暮送君疑醉梦，肠断，几番离恨有谁知？",
+                    "桃李春风听夜雨，如炬，俊才温玉是吾师。挥手碧波帆影去，唯愿，与君再见雪融时。"
                 ],
-                bgImage: "https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?w=800"
+                notes: [
+                    "万里黄云：虚写，营造送别氛围。唐代高适《别董大》：「千里黄云白日曛，北风吹雁雪纷纷。」",
+                    "雪融：虚写，代指春天。"
+                ]
+            },
+            {
+                id: 21,
+                title: "浣溪沙·春日别神女",
+                author: "缃彩成丛",
+                content: [
+                    "一曲阳关把酒听，落花归燕柳娉婷。斜袖罗，美目盼，雪霜凝。",
+                    "旖旎玉妆拂细雨，葳蕤兰叶绽新晴。尽离尊，云叆叇，数峰青。"
+                ],
+                notes: [
+                    "落花归燕：时间是仲春。宋代晏殊《破阵子》词：「燕子来时新社，梨花落后清明。」",
+                    "斜袖罗：抬起手臂，斜举衣袖。唐代李晔《巫山一段云》词。",
+                    "美目盼：《诗经·卫风·硕人》：「巧笑倩兮，美目盼兮。」",
+                    "雪霜凝：「雪霜」似具神性，而唐代韦庄《菩萨蛮》词：「垆边人似月，皓腕凝霜雪。」又具人性。",
+                    "云叆叇，数峰青：指巫山十二峰，源自巫山神女的典故。"
+                ]
+            },
+            {
+                id: 22,
+                title: "忆东坡·春江别绪",
+                author: "缃彩成丛",
+                content: [
+                    "望春江似练，兰舟数峰远。佳人赠我新题卷，不觉重泪眼。不觉重泪眼。",
+                    "旧游忆万遍，可得相见？尔去后、诗情敛。试陈愿与南归燕，盈盈波潋滟。盈盈波潋滟。"
+                ],
+                notes: [
+                    "这是笔者写给诗友陈尔东的赠词。",
+                    "盈盈波潋滟：宋代王观《卜算子·送鲍浩然之浙东》词：「水是眼波横，山是眉峰聚。欲问行人去那边？眉眼盈盈处。才始送春归，又送君归去。若到江南赶上春，千万和春住。」"
+                ]
+            },
+            {
+                id: 23,
+                title: "胜胜令·答友",
+                author: "阵午车",
+                content: [
+                    "离津浪远，别浦云重。落花流水各西东。青衫渍酒，对啼烛，卷愁篷。更几番、寒砦断鸿。",
+                    "忽报归鞍，疑梦里，识眉峰。旧衫犹带滴珠红。银釭照影，笑相逢，语难通。任玉壶、倾尽晓钟。"
+                ]
+            },
+            {
+                id: 24,
+                title: "苏幕遮",
+                author: "李旻尚",
+                content: [
+                    "暮云沉，天韵悄。帘影心昏，小字桔灯照。",
+                    "谁教夕霞萦月晓，缭乱星临，流水孤村绕。",
+                    "怨春山，青未了。风漫回廊，不送佳人笑。",
+                    "魂梦茫茫成渺渺，梦尽寒来，一任烟波杳。"
+                ],
+                interpretation: "近来烦事颇多，忧愁满身，适逢向晚，余独坐窗前，观霞落而月升，小灯昏而心绪不宁，故作此词，以解宿愁。"
+            },
+            {
+                id: 25,
+                title: "蝶恋花·记思",
+                author: "李旻尚",
+                content: [
+                    "昨夜不眠成乱绪，碎骨小楼，谩起黄莺语。",
+                    "涯角清寒谁与诉，中庭花影随心暮。",
+                    "寻遍红叶风满路，玉沫层林，舞过青山去。",
+                    "却向秋云托尺素，月明千里家何处。"
+                ]
+            },
+            {
+                id: 26,
+                title: "破阵子·二十一",
+                author: "奇",
+                createTime: "2025年12月24日",
+                content: [
+                    "晦望孤烟野树，旦夕商旅行人。",
+                    "毫末掀舞探骊浪，方寸纵横逐鹿尘，何处可栖身。",
+                    "昼短染指清梦，枥少再铨高门。",
+                    "冬风未冷金樽酒，春来谁顾累土声，一去了无痕。"
+                ]
             }
         ];
 
@@ -1467,7 +1706,7 @@
         // 创建封面页
         function createCoverSpread() {
             const spread = document.createElement('div');
-            spread.className = 'page-spread';
+            spread.className = 'page-spread active';
             spread.innerHTML = `
                 <div class="page page-left cover-page">
                     <div class="cover-decoration" style="background-image: url('https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?w=800');"></div>
@@ -1484,7 +1723,7 @@
                 </div>
                 <div class="page page-right toc-page">
                     <h2 class="toc-title">
-                        <span class="material-symbols-outlined">list</span>
+                        <span class="icon">☰</span>
                         目 录
                     </h2>
                     <div class="toc-list">
@@ -1524,33 +1763,34 @@
                     </div>
                 </div>
                 <div class="page page-right annotation-page">
-                    <div class="annotation-bg-image" style="background-image: url('${poem.bgImage}');"></div>
+                    ${poem.bgImage ? `<div class="annotation-bg-image" style="background-image: url('${poem.bgImage}');"></div>` : ''}
                     <div class="annotation-content">
                         <div class="annotation-card">
                             <div class="annotation-card-header">
                                 <h3 class="annotation-card-title">
-                                    <span class="material-symbols-outlined">auto_awesome</span>
+                                    <span class="icon">✨</span>
                                     作者心语
                                 </h3>
                                 <div class="annotation-card-actions">
-                                    <button title="朗读"><span class="material-symbols-outlined">headphones</span></button>
-                                    <button title="收藏"><span class="material-symbols-outlined">bookmark</span></button>
-                                    <button title="深入探索" class="explore-icon-btn" onclick="openAnnotationModal(${index})"><span class="material-symbols-outlined">open_in_new</span></button>
+                                    <button title="朗读"><span class="icon">🎧</span></button>
+                                    <button title="收藏"><span class="icon">🔖</span></button>
+                                    <button title="深入探索" class="explore-icon-btn" onclick="openAnnotationModal(${index})"><span class="icon">↗</span></button>
                                 </div>
                             </div>
-                            <p class="annotation-text">${poem.interpretation}</p>
+                            ${poem.interpretation ? `<p class="annotation-text">${poem.interpretation}</p>` : ''}
+                            ${poem.notes && poem.notes.length > 0 ? `
                             <div class="annotation-section">
                                 <h4 class="annotation-section-title">词句注释</h4>
                                 <div class="annotation-notes">
                                     ${poem.notes.slice(0, 3).map(note => `<div class="annotation-note-item">${note}</div>`).join('')}
                                     ${poem.notes.length > 3 ? `<div class="annotation-note-more">...共${poem.notes.length}条注释，点击下方查看全部</div>` : ''}
                                 </div>
-                            </div>
+                            </div>` : ''}
                             <div class="annotation-footer">
                                 <span class="annotation-footer-link">掬月诗社</span>
                                 <div class="annotation-explore-btn" onclick="openAnnotationModal(${index})">
                                     <span>深入探索</span>
-                                    <span class="material-symbols-outlined">arrow_right_alt</span>
+                                    <span class="icon">→</span>
                                 </div>
                             </div>
                         </div>
@@ -1611,7 +1851,8 @@
                 } else if (index < currentPage) {
                     spread.classList.add('flipped');
                 }
-                spread.style.zIndex = index === currentPage ? 10 : totalPages - index;
+                // 当前页面 z-index 最高，其他页面根据距离当前页面的位置递减
+                spread.style.zIndex = index === currentPage ? 100 : (index < currentPage ? index : totalPages - index);
             });
 
             // 更新标题
@@ -1697,17 +1938,21 @@
                     </div>
                 </div>
                 
+                ${poem.interpretation ? `
                 <div class="annotation-modal-section">
                     <h3 class="annotation-modal-section-title">作者心语</h3>
                     <p class="annotation-modal-text">${poem.interpretation}</p>
                 </div>
+                ` : ''}
                 
+                ${poem.notes && poem.notes.length > 0 ? `
                 <div class="annotation-modal-section">
                     <h3 class="annotation-modal-section-title">词句注释</h3>
                     <div class="annotation-modal-notes">
                         ${poem.notes.map(note => `<div class="annotation-modal-note-item">${note}</div>`).join('')}
                     </div>
                 </div>
+                ` : ''}
             `;
 
             modal.classList.add('open');
