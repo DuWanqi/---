@@ -1262,7 +1262,6 @@
     <div class="annotation-modal" id="annotationModal">
         <div class="annotation-modal-header">
             <h2 class="annotation-modal-title">
-                <span class="icon">📚</span>
                 <span id="modalPoemTitle">诗词详解</span>
             </h2>
             <button class="annotation-modal-close" onclick="closeAnnotationModal()">
@@ -1732,8 +1731,8 @@
         // ==========================================
         // 🎮 页面控制逻辑
         // ==========================================
-        let currentPage = 0; // 0 = 封面, 1+ = 诗词页面
-        const totalPages = poems.length + 1; // 封面 + 诗词数量
+        let currentPage = 0; // 0 = 封面, 1 = 序言, 2+ = 诗词页面
+        const totalPages = poems.length + 2; // 封面 + 序言 + 诗词数量
 
         // 初始化页面
         function initPages() {
@@ -1743,6 +1742,10 @@
             // 创建封面页
             const coverSpread = createCoverSpread();
             container.appendChild(coverSpread);
+
+            // 创建序言页
+            const prefaceSpread = createPrefaceSpread();
+            container.appendChild(prefaceSpread);
 
             // 创建诗词页面
             poems.forEach((poem, index) => {
@@ -1784,13 +1787,63 @@
                         目 录
                     </h2>
                     <div class="toc-list">
+                        <div class="toc-item" onclick="goToPage(1)">
+                            <span class="toc-number">序</span>
+                            <span class="toc-poem-title">序 言</span>
+                            <span class="toc-author">杜万奇</span>
+                        </div>
                         ${poems.map((poem, i) => `
-                            <div class="toc-item" onclick="goToPage(${i + 1})">
+                            <div class="toc-item" onclick="goToPage(${i + 2})">
                                 <span class="toc-number">${String(i + 1).padStart(2, '0')}</span>
                                 <span class="toc-poem-title">${poem.title}</span>
                                 <span class="toc-author">${poem.author}</span>
                             </div>
                         `).join('')}
+                    </div>
+                </div>
+            `;
+            return spread;
+        }
+
+        // 创建序言页
+        function createPrefaceSpread() {
+            const spread = document.createElement('div');
+            spread.className = 'page-spread';
+            spread.innerHTML = `
+                <div class="page page-left poem-page">
+                    <div class="poem-content-area">
+                        <div class="poem-vertical-content">
+                            <div class="poem-title-block">
+                                <h2 class="poem-title">序 言</h2>
+                            </div>
+                            <div class="poem-lines" style="text-align: left; max-width: 90%;">
+                                <p class="poem-line" style="text-align: left; line-height: 2;">岁聿其莫，年关将近。港中深掬月诗社邀诸同窗，汇一载古诗文作，辑成《掬月集》一册，以藏岁月清欢，念同窗相知。</p>
+                                <p class="poem-line" style="text-align: left; line-height: 2; margin-top: 1.5rem;">诗文本无高低，唯有真情动人。集中诸篇，皆为诸君平日读书有感、观物生情，或闲时偶得、知己闲谈，不拘格律，不逐绮丽，字字皆赤诚。</p>
+                                <p class="poem-line" style="text-align: left; line-height: 2; margin-top: 1.5rem;">我社以"掬月"为名，愿掬岁月于诗词，藏心事于平仄。此集所录，无关工拙，皆为诸君一岁心声，亦是你我以诗为契、以文相和的情谊写照。</p>
+                                <p class="poem-line" style="text-align: left; line-height: 2; margin-top: 1.5rem;">今集册已成，展卷可览山河草木、心事微光。愿诗心不老，清韵长存；诸友相知，岁岁皆安。</p>
+                                <div style="margin-top: 3rem; text-align: right; padding-right: 2rem;">
+                                    <p style="font-size: 1.125rem; color: var(--ink); font-weight: 600; margin-bottom: 0.5rem;">掬月社社长</p>
+                                    <p style="font-size: 1.5rem; color: var(--seal-red); font-weight: 900; letter-spacing: 0.2em;">杜万奇</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="page-number page-number-left">
+                        <span>02</span>
+                    </div>
+                </div>
+                <div class="page page-right annotation-page">
+                    <div class="annotation-content">
+                        <div style="text-align: center; padding: 3rem; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%;">
+                            <div style="width: 120px; height: 120px; border: 3px solid var(--seal-red); border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: var(--seal-red); font-weight: 700; background: rgba(185, 58, 50, 0.05); margin-bottom: 2rem;">
+                                <span>掬</span>
+                                <span>月</span>
+                            </div>
+                            <p style="font-size: 1.25rem; color: var(--ink-light); letter-spacing: 0.2em;">掬月诗社</p>
+                        </div>
+                    </div>
+                    <div class="page-number page-number-right">
+                        <span>03</span>
                     </div>
                 </div>
             `;
@@ -1816,7 +1869,7 @@
                         </div>
                     </div>
                     <div class="page-number page-number-left">
-                        <span>${String((index + 1) * 2).padStart(2, '0')}</span>
+                        <span>${String((index + 2) * 2).padStart(2, '0')}</span>
                     </div>
                 </div>
                 <div class="page page-right annotation-page">
@@ -1825,13 +1878,10 @@
                         <div class="annotation-card">
                             <div class="annotation-card-header">
                                 <h3 class="annotation-card-title">
-                                    <span class="icon">✨</span>
                                     作者心语
                                 </h3>
                                 <div class="annotation-card-actions">
-                                    <button title="朗读"><span class="icon">🎧</span></button>
-                                    <button title="收藏"><span class="icon">🔖</span></button>
-                                    <button title="深入探索" class="explore-icon-btn" onclick="openAnnotationModal(${index})"><span class="icon">↗</span></button>
+                                    <button title="深入探索" class="explore-icon-btn" onclick="openAnnotationModal(${index})">深入探索</button>
                                 </div>
                             </div>
                             ${poem.interpretation ? `<p class="annotation-text">${poem.interpretation}</p>` : ''}
@@ -1845,7 +1895,7 @@
                             </div>` : ''}
                             <div class="annotation-footer">
                                 <span class="annotation-footer-link">掬月诗社</span>
-                                <div class="annotation-explore-btn" onclick="openAnnotationModal(${index})">
+                                <div class="annotation-explore-btn" onclick="openAnnotationModal(${index + 1})">
                                     <span>深入探索</span>
                                     <span class="icon">→</span>
                                 </div>
@@ -1853,7 +1903,7 @@
                         </div>
                     </div>
                     <div class="page-number page-number-right">
-                        <span>${String((index + 1) * 2 + 1).padStart(2, '0')}</span>
+                        <span>${String((index + 2) * 2 + 1).padStart(2, '0')}</span>
                     </div>
                 </div>
             `;
@@ -1886,8 +1936,15 @@
                         <div class="toc-drawer-author">掬月诗集</div>
                     </div>
                 </div>
+                <div class="toc-drawer-item ${currentPage === 1 ? 'active' : ''}" onclick="goToPage(1); toggleToc();">
+                    <div class="toc-drawer-number">序</div>
+                    <div class="toc-drawer-info">
+                        <div class="toc-drawer-poem-title">序 言</div>
+                        <div class="toc-drawer-author">杜万奇</div>
+                    </div>
+                </div>
                 ${poems.map((poem, i) => `
-                    <div class="toc-drawer-item ${currentPage === i + 1 ? 'active' : ''}" onclick="goToPage(${i + 1}); toggleToc();">
+                    <div class="toc-drawer-item ${currentPage === i + 2 ? 'active' : ''}" onclick="goToPage(${i + 2}); toggleToc();">
                         <div class="toc-drawer-number">${String(i + 1).padStart(2, '0')}</div>
                         <div class="toc-drawer-info">
                             <div class="toc-drawer-poem-title">${poem.title}</div>
@@ -1916,8 +1973,10 @@
             const titleEl = document.getElementById('pageTitle');
             if (currentPage === 0) {
                 titleEl.textContent = '掬月诗集';
+            } else if (currentPage === 1) {
+                titleEl.textContent = '序 言';
             } else {
-                titleEl.textContent = poems[currentPage - 1].title;
+                titleEl.textContent = poems[currentPage - 2].title;
             }
 
             // 更新分页点
